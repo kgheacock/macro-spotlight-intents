@@ -5,7 +5,7 @@ status: "ongoing"
 created: 2026-11-23
 updated: 2026-11-23
 issue: none
-pr: TBD
+pr: https://github.com/kgheacock/macro-spotlight-intents/pull/2
 branch: "0001-initial-project-setup"
 owner: kgheacock
 ---
