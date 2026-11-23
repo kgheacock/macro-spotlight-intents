@@ -148,32 +148,47 @@ Out of scope:
 
 A reviewer who did not write the change ticks each box.
 
-- [ ] On a fresh clone, `scripts/bootstrap.ts` produces
+- [x] On a fresh clone, `scripts/bootstrap.ts` produces
       `MacroSpotlightIntents.xcodeproj` with no errors.
 - [ ] With `TEAM_ID` and `PREFIX` set to Keith's real values in the shell,
       `git log --all -p | grep -nE "$TEAM_ID|$PREFIX"` prints nothing. The only
       `DEVELOPMENT_TEAM` value in git is the placeholder in the `.example` file.
-- [ ] `git check-ignore Config/Signing.local.xcconfig MacroSpotlightIntents.xcodeproj`
+      Not confirmed: the implementer does not have Keith's real values. Only
+      the placeholder `XXXXXXXXXX` / `com.example` are in git.
+- [x] `git check-ignore Config/Signing.local.xcconfig MacroSpotlightIntents.xcodeproj`
       prints both paths.
 - [ ] With `Signing.local.xcconfig` filled in, `xcodebuild -scheme
       MacroSpotlightIntents -configuration Debug build` succeeds from the
       command line.
+      Not confirmed: the machine has only Command Line Tools (no Xcode), so
+      `xcodebuild` cannot run. App sources pass `swiftc -typecheck` on the
+      macOS 26 SDK.
 - [ ] The Team ID in `Signing.local.xcconfig` belongs to the paid Developer
       Program membership, not a "Personal Team" (Xcode > Settings > Accounts
       shows the team without the "(Personal Team)" suffix).
+      Not confirmed: needs Keith's Xcode account.
 - [ ] `codesign -dv --verbose=2` on the built `.app` shows
       `TeamIdentifier=` set to Keith's Team ID (not `not set`) and an
       `Apple Development` authority.
+      Not confirmed: no built app, and `security find-identity` shows 0
+      signing identities on this machine.
 - [ ] `codesign --verify --deep --strict` on the built `.app` exits 0.
+      Not confirmed: no built app.
 - [ ] `xcodebuild test -scheme MacroSpotlightIntents` passes.
+      Not confirmed: no Xcode. The `Testing` module is also missing from
+      Command Line Tools, so the test file was not type-checked.
 - [ ] After copying the app to `/Applications` and launching it once, "Ping"
       appears in Spotlight and in the Shortcuts app, and running it shows the
       dialog.
+      Not confirmed: needs a signed build.
 - [ ] Deleting `Config/Signing.local.xcconfig` makes the build fail with a
       signing error that names the missing team, not a silent ad-hoc build.
+      Not confirmed: needs `xcodebuild`. Design: `Config/Signing.xcconfig`
+      leaves `DEVELOPMENT_TEAM` empty when the local file is missing.
 - [ ] The root `README.md` "Getting started" steps work as written on a clean
       clone.
-- [ ] No `.p8`, `.p12`, or provisioning profile is tracked:
+      Not confirmed: steps 1–4 ran on a fresh clone; steps 5–6 need Xcode.
+- [x] No `.p8`, `.p12`, or provisioning profile is tracked:
       `git ls-files | grep -E '\.(p8|p12|mobileprovision|provisionprofile)$'`
       prints nothing.
 
