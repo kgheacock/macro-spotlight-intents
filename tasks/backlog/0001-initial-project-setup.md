@@ -96,6 +96,18 @@ signed in. Plain local builds work with the Xcode account alone.
 changes made in the Xcode UI do not stick. A move to CI later still needs
 approach C's certificate export, so B defers that work rather than removing it.
 
+## Prerequisite: paid Apple Developer Program
+
+Keith chose a paid Apple Developer Program membership (decided 2026-11-23)
+over a free personal team. Profiles from a free team expire after 7 days, and
+a free team cannot create App Store Connect API keys or Developer ID
+certificates. Enroll at <https://developer.apple.com/programs/enroll/> before
+work starts. Approval can take a day or more.
+
+Once enrolled, the Team ID is on the Membership details page at
+<https://developer.apple.com/account>. It goes only in
+`Config/Signing.local.xcconfig`.
+
 ## Scope
 
 In scope:
@@ -146,6 +158,9 @@ A reviewer who did not write the change ticks each box.
 - [ ] With `Signing.local.xcconfig` filled in, `xcodebuild -scheme
       MacroSpotlightIntents -configuration Debug build` succeeds from the
       command line.
+- [ ] The Team ID in `Signing.local.xcconfig` belongs to the paid Developer
+      Program membership, not a "Personal Team" (Xcode > Settings > Accounts
+      shows the team without the "(Personal Team)" suffix).
 - [ ] `codesign -dv --verbose=2` on the built `.app` shows
       `TeamIdentifier=` set to Keith's Team ID (not `not set`) and an
       `Apple Development` authority.
@@ -169,6 +184,3 @@ A reviewer who did not write the change ticks each box.
   Connect API key for headless builds. If it means something else, such as a
   token the intents use to call an outside service, add a section on where that
   token lives (keychain item read at runtime) before work starts.
-- Free personal team or paid Developer Program? A free team signs for local
-  use but provisioning profiles expire after 7 days, and the build needs
-  re-signing weekly.
