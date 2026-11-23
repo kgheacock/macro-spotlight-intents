@@ -177,14 +177,14 @@ A reviewer who did not write the change ticks each box.
 - [ ] After copying the app to `/Applications` and launching it once, "Ping"
       appears in Spotlight and in the Shortcuts app, and running it shows the
       dialog.
-      Not confirmed: app is installed and running from /Applications; waiting on Keith to check Spotlight and Shortcuts by eye.
+      Partly confirmed 2026-11-23: "Ping" appears in Spotlight and in Shortcuts. Not confirmed: running it shows no dialog. Cause unknown; task 0002 (logging) adds the means to find it.
 - [x] Deleting `Config/Signing.local.xcconfig` makes the build fail with a
       signing error that names the missing team, not a silent ad-hoc build.
       Confirmed: `BUILD FAILED` with `Signing for "MacroSpotlightIntents"
       requires a development team.`
 - [ ] The root `README.md` "Getting started" steps work as written on a clean
       clone.
-      Steps 1–5 ran as written. Step 6 waits on the Spotlight and Shortcuts check above.
+      Steps 1–5 ran as written. Step 6 fails at its last claim: the dialog does not show (see the Ping item above).
 - [x] No `.p8`, `.p12`, or provisioning profile is tracked:
       `git ls-files | grep -E '\.(p8|p12|mobileprovision|provisionprofile)$'`
       prints nothing.
