@@ -125,7 +125,7 @@ In scope:
     Shortcuts/                        AppShortcutsProvider
   Tests/MacroSpotlightIntentsTests/
   scripts/
-    bootstrap.sh                      checks xcodegen, copies .example if missing, runs generate
+    bootstrap.ts                      checks xcodegen, copies .example if missing, runs generate
   ```
 - One macOS app target, deployment target macOS 26, Swift 6, App Sandbox on,
   Hardened Runtime on.
@@ -136,7 +136,7 @@ In scope:
 - `.gitignore` additions: `*.xcodeproj/`, `Config/Signing.local.xcconfig`,
   `*.p8`, `*.p12`, `*.mobileprovision`, `*.provisionprofile`.
 - A "Getting started" section in the root `README.md`: install xcodegen, run
-  `scripts/bootstrap.sh`, fill in the local xcconfig, open the project.
+  `scripts/bootstrap.ts`, fill in the local xcconfig, open the project.
 
 Out of scope:
 
@@ -148,7 +148,7 @@ Out of scope:
 
 A reviewer who did not write the change ticks each box.
 
-- [ ] On a fresh clone, `scripts/bootstrap.sh` produces
+- [ ] On a fresh clone, `scripts/bootstrap.ts` produces
       `MacroSpotlightIntents.xcodeproj` with no errors.
 - [ ] With `TEAM_ID` and `PREFIX` set to Keith's real values in the shell,
       `git log --all -p | grep -nE "$TEAM_ID|$PREFIX"` prints nothing. The only

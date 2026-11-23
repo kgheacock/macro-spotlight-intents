@@ -1,0 +1,8 @@
+// Copy this file to Signing.local.xcconfig and fill in your own values.
+// Signing.local.xcconfig is git-ignored. Never commit real values.
+//
+// Team ID: https://developer.apple.com/account > Membership details.
+DEVELOPMENT_TEAM = XXXXXXXXXX
+
+// Reverse-DNS prefix you own. The app bundle ID is <prefix>.MacroSpotlightIntents.
+BUNDLE_ID_PREFIX = com.example

@@ -1,0 +1,50 @@
+name: MacroSpotlightIntents
+options:
+  bundleIdPrefix: invalid.placeholder   # overridden by BUNDLE_ID_PREFIX in the xcconfig
+  createIntermediateGroups: true
+configFiles:
+  Debug: Config/Signing.xcconfig
+  Release: Config/Signing.xcconfig
+settings:
+  base:
+    ENABLE_HARDENED_RUNTIME: YES
+targets:
+  MacroSpotlightIntents:
+    type: application
+    platform: macOS
+    sources:
+      - Sources/MacroSpotlightIntents
+    info:
+      path: Sources/MacroSpotlightIntents/Info.plist
+      properties:
+        CFBundleDisplayName: Macro Spotlight Intents
+        LSUIElement: true
+    entitlements:
+      path: Sources/MacroSpotlightIntents/MacroSpotlightIntents.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(BUNDLE_ID_PREFIX).MacroSpotlightIntents
+        GENERATE_INFOPLIST_FILE: NO
+  MacroSpotlightIntentsTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - Tests/MacroSpotlightIntentsTests
+    dependencies:
+      - target: MacroSpotlightIntents
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(BUNDLE_ID_PREFIX).MacroSpotlightIntentsTests
+        GENERATE_INFOPLIST_FILE: YES
+        BUNDLE_LOADER: $(TEST_HOST)
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/MacroSpotlightIntents.app/Contents/MacOS/MacroSpotlightIntents
+schemes:
+  MacroSpotlightIntents:
+    build:
+      targets:
+        MacroSpotlightIntents: all
+    test:
+      targets:
+        - MacroSpotlightIntentsTests
