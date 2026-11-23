@@ -18,9 +18,13 @@ reach Spotlight and Shortcuts).
    - `BUNDLE_ID_PREFIX`: a reverse-DNS prefix you own, for example `com.yourname`.
 4. Run `node scripts/bootstrap.ts` again so the project picks up the values, then
    `open MacroSpotlightIntents.xcodeproj`.
-5. Build and test from the command line:
+5. Build and test from the command line. `xcodebuild` needs full Xcode selected:
+   run `sudo xcode-select -s /Applications/Xcode.app`, or prefix the commands with
+   `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`. The first build
+   needs `-allowProvisioningUpdates` so Xcode can create your Apple Development
+   certificate and profile (you must be signed in under Xcode > Settings > Accounts).
    ```bash
-   xcodebuild -scheme MacroSpotlightIntents -configuration Debug build
+   xcodebuild -scheme MacroSpotlightIntents -configuration Debug -allowProvisioningUpdates build
    xcodebuild -scheme MacroSpotlightIntents test
    ```
 6. To try the intent, copy the built app to `/Applications` and launch it once.
