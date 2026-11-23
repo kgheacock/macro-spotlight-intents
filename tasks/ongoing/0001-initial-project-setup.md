@@ -1,12 +1,12 @@
 ---
 id: 0001
 title: Initial project setup with personal code signing
-status: backlog
+status: "ongoing"
 created: 2026-11-23
 updated: 2026-11-23
 issue: none
 pr: TBD
-branch: TBD
+branch: "0001-initial-project-setup"
 owner: kgheacock
 ---
 
