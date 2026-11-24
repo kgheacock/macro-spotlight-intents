@@ -1,0 +1,11 @@
+// Signing settings. The identity comes from Signing.local.xcconfig, which is
+// git-ignored. If that file is missing, DEVELOPMENT_TEAM stays empty and the
+// build fails with a signing error instead of silently signing ad hoc.
+#include "Base.xcconfig"
+
+CODE_SIGN_STYLE = Automatic
+CODE_SIGN_IDENTITY = Apple Development
+DEVELOPMENT_TEAM =
+BUNDLE_ID_PREFIX = invalid.missing-signing-local-xcconfig
+
+#include? "Signing.local.xcconfig"

@@ -1,12 +1,12 @@
 ---
 id: 0001
 title: Initial project setup with personal code signing
-status: backlog
+status: "ongoing"
 created: 2026-11-23
 updated: 2026-11-23
 issue: none
-pr: TBD
-branch: TBD
+pr: https://github.com/kgheacock/macro-spotlight-intents/pull/2
+branch: "0001-initial-project-setup"
 owner: kgheacock
 ---
 
@@ -125,7 +125,7 @@ In scope:
     Shortcuts/                        AppShortcutsProvider
   Tests/MacroSpotlightIntentsTests/
   scripts/
-    bootstrap.sh                      checks xcodegen, copies .example if missing, runs generate
+    bootstrap.ts                      checks xcodegen, copies .example if missing, runs generate
   ```
 - One macOS app target, deployment target macOS 26, Swift 6, App Sandbox on,
   Hardened Runtime on.
@@ -136,7 +136,7 @@ In scope:
 - `.gitignore` additions: `*.xcodeproj/`, `Config/Signing.local.xcconfig`,
   `*.p8`, `*.p12`, `*.mobileprovision`, `*.provisionprofile`.
 - A "Getting started" section in the root `README.md`: install xcodegen, run
-  `scripts/bootstrap.sh`, fill in the local xcconfig, open the project.
+  `scripts/bootstrap.ts`, fill in the local xcconfig, open the project.
 
 Out of scope:
 
@@ -148,32 +148,44 @@ Out of scope:
 
 A reviewer who did not write the change ticks each box.
 
-- [ ] On a fresh clone, `scripts/bootstrap.sh` produces
+- [x] On a fresh clone, `scripts/bootstrap.ts` produces
       `MacroSpotlightIntents.xcodeproj` with no errors.
-- [ ] With `TEAM_ID` and `PREFIX` set to Keith's real values in the shell,
+- [x] With `TEAM_ID` and `PREFIX` set to Keith's real values in the shell,
       `git log --all -p | grep -nE "$TEAM_ID|$PREFIX"` prints nothing. The only
       `DEVELOPMENT_TEAM` value in git is the placeholder in the `.example` file.
-- [ ] `git check-ignore Config/Signing.local.xcconfig MacroSpotlightIntents.xcodeproj`
+      Confirmed 2026-11-23 with the real values read from the local xcconfig:
+      0 matches in `git log --all -p`, 0 in tracked files.
+- [x] `git check-ignore Config/Signing.local.xcconfig MacroSpotlightIntents.xcodeproj`
       prints both paths.
-- [ ] With `Signing.local.xcconfig` filled in, `xcodebuild -scheme
+- [x] With `Signing.local.xcconfig` filled in, `xcodebuild -scheme
       MacroSpotlightIntents -configuration Debug build` succeeds from the
       command line.
-- [ ] The Team ID in `Signing.local.xcconfig` belongs to the paid Developer
+      Confirmed: `BUILD SUCCEEDED` with `-allowProvisioningUpdates` (needed
+      on the first build, to create the Apple Development certificate).
+- [x] The Team ID in `Signing.local.xcconfig` belongs to the paid Developer
       Program membership, not a "Personal Team" (Xcode > Settings > Accounts
       shows the team without the "(Personal Team)" suffix).
-- [ ] `codesign -dv --verbose=2` on the built `.app` shows
+      Confirmed: Xcode prefs list the team with `isFreeProvisioningTeam = 0`.
+- [x] `codesign -dv --verbose=2` on the built `.app` shows
       `TeamIdentifier=` set to Keith's Team ID (not `not set`) and an
       `Apple Development` authority.
-- [ ] `codesign --verify --deep --strict` on the built `.app` exits 0.
-- [ ] `xcodebuild test -scheme MacroSpotlightIntents` passes.
+      Confirmed: `TeamIdentifier` is set and the authority is
+      `Apple Development`. Flags show `runtime` (Hardened Runtime on).
+- [x] `codesign --verify --deep --strict` on the built `.app` exits 0.
+- [x] `xcodebuild test -scheme MacroSpotlightIntents` passes.
+      Confirmed: `TEST SUCCEEDED`, 2 tests in 1 suite.
 - [ ] After copying the app to `/Applications` and launching it once, "Ping"
       appears in Spotlight and in the Shortcuts app, and running it shows the
       dialog.
-- [ ] Deleting `Config/Signing.local.xcconfig` makes the build fail with a
+      Partly confirmed 2026-11-23: "Ping" appears in Spotlight and in Shortcuts. Not confirmed: running it shows no dialog. Cause unknown; task 0002 (logging) adds the means to find it.
+- [x] Deleting `Config/Signing.local.xcconfig` makes the build fail with a
       signing error that names the missing team, not a silent ad-hoc build.
+      Confirmed: `BUILD FAILED` with `Signing for "MacroSpotlightIntents"
+      requires a development team.`
 - [ ] The root `README.md` "Getting started" steps work as written on a clean
       clone.
-- [ ] No `.p8`, `.p12`, or provisioning profile is tracked:
+      Steps 1–5 ran as written. Step 6 fails at its last claim: the dialog does not show (see the Ping item above).
+- [x] No `.p8`, `.p12`, or provisioning profile is tracked:
       `git ls-files | grep -E '\.(p8|p12|mobileprovision|provisionprofile)$'`
       prints nothing.
 

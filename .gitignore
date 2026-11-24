@@ -3,3 +3,9 @@ node_modules/
 build/
 DerivedData/
 xcuserdata/
+*.xcodeproj/
+Config/Signing.local.xcconfig
+*.p8
+*.p12
+*.mobileprovision
+*.provisionprofile
