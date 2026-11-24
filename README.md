@@ -34,6 +34,30 @@ reach Spotlight and Shortcuts).
 Your Team ID never goes into git. Change project settings in `project.yml` or
 the xcconfig files, not in the Xcode UI: the next generate throws UI changes away.
 
+## Debugging
+
+The app logs with `os.Logger`. The subsystem is the bundle ID, that is
+`<BUNDLE_ID_PREFIX>.MacroSpotlightIntents`, where the prefix is the value in your
+`Config/Signing.local.xcconfig`. The categories are `app` and `intents`.
+
+Every intent logs `<name> started`, then `<name> finished in <n> ms` or
+`<name> failed after <n> ms: <error type>`. The app logs one `app launched` line at start.
+
+```bash
+# In zsh, use the full path: plain `log` is a shell builtin
+# Watch live while you run an intent
+/usr/bin/log stream --level info --predicate 'subsystem == "<prefix>.MacroSpotlightIntents"'
+
+# Read the last 5 minutes after the fact
+/usr/bin/log show --last 5m --predicate 'subsystem == "<prefix>.MacroSpotlightIntents"'
+
+# Only failures
+/usr/bin/log show --last 5m --predicate 'subsystem == "<prefix>.MacroSpotlightIntents" AND messageType == error'
+```
+
+Error text is private. It shows as `<private>` unless a debugger is attached to the app. Wrap the body of each new
+intent in `IntentLog.run("<name>") { ... }` so that it logs in the same way.
+
 ## Layout
 
 ```
@@ -42,6 +66,7 @@ Config/                      xcconfig files (signing identity stays in the git-i
 Sources/MacroSpotlightIntents/
   App/                       @main menu bar app
   Intents/                   one file per AppIntent
+  Logging/                   AppLog loggers and the IntentLog.run helper
   Shortcuts/                 AppShortcutsProvider
 Tests/                       unit tests
 scripts/bootstrap.ts         first-time setup

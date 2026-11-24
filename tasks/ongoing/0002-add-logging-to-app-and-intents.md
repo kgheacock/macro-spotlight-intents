@@ -41,7 +41,7 @@ Three approaches follow. Each one solves the problem in a different way.
 Each intent creates a `Logger` and writes its own lines by hand.
 
 - Good, because it adds no new types. Each intent needs about three lines.
-- Good, because Console and `log stream` work with it at once.
+- Good, because Console and `/usr/bin/log stream` work with it at once.
 - Bad, because a new intent that forgets the lines leaves no trace when it fails.
 - Bad, because the wording drifts between intents, so one `log` predicate cannot match them all.
 
@@ -79,7 +79,7 @@ so no identity is in the source. The categories are `app` and `intents`.
 
 `IntentLog.run` writes these lines:
 
-- `<name> started` at `.notice` level, so `log show` finds it after the event.
+- `<name> started` at `.notice` level, so `/usr/bin/log show` finds it after the event.
 - `<name> finished in <n> ms` at `.notice` level.
 - `<name> failed after <n> ms: <error type>` at `.error` level.
 
@@ -103,18 +103,18 @@ ticked.
 
 - [ ] **DoD-1** — Running Ping from Shortcuts writes `PingIntent started` and
   `PingIntent finished in <n> ms`. **Proof:** run
-  `log stream --level info --predicate 'subsystem == "<prefix>.MacroSpotlightIntents"'`
+  `/usr/bin/log stream --level info --predicate 'subsystem == "<prefix>.MacroSpotlightIntents"'`
   while you run Ping, where `<prefix>` is `BUNDLE_ID_PREFIX` from `Config/Signing.local.xcconfig`
 - [ ] **DoD-2** — The same two lines appear when Ping runs from Spotlight.
   **Proof:** the same command, with Ping started from Spotlight
 - [ ] **DoD-3** — After the run, the lines are still readable. **Proof:**
-  `log show --last 5m --predicate 'subsystem == "<prefix>.MacroSpotlightIntents"'` prints both lines
+  `/usr/bin/log show --last 5m --predicate 'subsystem == "<prefix>.MacroSpotlightIntents"'` prints both lines
 - [ ] **DoD-4** — Launching the app writes one `app launched version=<v> build=<b>` line.
-  **Proof:** `log show --last 1m` with the same predicate, after you launch the app
+  **Proof:** `/usr/bin/log show --last 1m` with the same predicate, after you launch the app
 - [ ] **DoD-5** — When the body throws, `IntentLog.run` still throws the same
   error to the caller. **Proof:** `xcodebuild test -scheme MacroSpotlightIntents`
   runs `IntentLogTests.rethrowsBodyError` and it passes. Then run
-  `log show --last 1m --predicate 'subsystem == "<prefix>.MacroSpotlightIntents" AND messageType == error'`. It prints one `failed after` line
+  `/usr/bin/log show --last 1m --predicate 'subsystem == "<prefix>.MacroSpotlightIntents" AND messageType == error'`. It prints one `failed after` line
 - [ ] **DoD-6** — `IntentLog.run` returns the value of its body. **Proof:**
   `IntentLogTests.returnsBodyValue` passes
 - [ ] **DoD-7** — The source has no ad hoc logging. **Proof:**
