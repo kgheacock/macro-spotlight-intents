@@ -9,6 +9,9 @@ struct PingIntent: AppIntent {
     static let message = "macro-spotlight-intents is working"
 
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        .result(dialog: IntentDialog(stringLiteral: Self.message))
+        let dialog = try await IntentLog.run("PingIntent") {
+            IntentDialog(stringLiteral: Self.message)
+        }
+        return .result(dialog: dialog)
     }
 }
