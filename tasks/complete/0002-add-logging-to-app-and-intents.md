@@ -1,13 +1,13 @@
 ---
 id: "0002"
 title: "Add os.Logger logging to the app and every intent"
-status: "ongoing"
+status: "complete"
 created: "2026-11-23"
 updated: "2026-11-23"
 owner: "kgheacock"
 issue: null
 issue_url: null
-pr: null
+pr: "https://github.com/kgheacock/macro-spotlight-intents/pull/3"
 branch: "0002-add-logging-to-app-and-intents"
 related: ["0001"]
 tags: ["logging", "debugging"]
@@ -120,7 +120,7 @@ ticked.
 - [x] **DoD-7** — The source has no ad hoc logging. **Proof:**
   `grep -rnE 'print\(|NSLog\(' Sources` prints nothing
 - [x] **DoD-8** — `README.md` records the debug commands. **Proof:** `README.md`, section "Debugging"
-- [ ] **DoD-9** — The PR in the `pr` field links to this spec. **Proof:** PR body
+- [x] **DoD-9** — The PR in the `pr` field links to this spec. **Proof:** PR body
 
 ## Risks
 
