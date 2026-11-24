@@ -1,14 +1,14 @@
 ---
 id: "0002"
 title: "Add os.Logger logging to the app and every intent"
-status: "backlog"
+status: "ongoing"
 created: "2026-11-23"
 updated: "2026-11-23"
 owner: "kgheacock"
 issue: null
 issue_url: null
 pr: null
-branch: null
+branch: "0002-add-logging-to-app-and-intents"
 related: ["0001"]
 tags: ["logging", "debugging"]
 ---
