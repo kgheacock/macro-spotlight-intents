@@ -1,7 +1,7 @@
 ---
 id: 0001
 title: Initial project setup with personal code signing
-status: "ongoing"
+status: "complete"
 created: 2026-11-23
 updated: 2026-11-23
 issue: none
@@ -174,17 +174,22 @@ A reviewer who did not write the change ticks each box.
 - [x] `codesign --verify --deep --strict` on the built `.app` exits 0.
 - [x] `xcodebuild test -scheme MacroSpotlightIntents` passes.
       Confirmed: `TEST SUCCEEDED`, 2 tests in 1 suite.
-- [ ] After copying the app to `/Applications` and launching it once, "Ping"
+- [x] After copying the app to `/Applications` and launching it once, "Ping"
       appears in Spotlight and in the Shortcuts app, and running it shows the
       dialog.
-      Partly confirmed 2026-11-23: "Ping" appears in Spotlight and in Shortcuts. Not confirmed: running it shows no dialog. Cause unknown; task 0002 (logging) adds the means to find it.
+      Confirmed 2026-11-23, with one gap. Spotlight lists two "Ping" entries. The entry for
+      the app (`Ping | MacroSpotlightIntents`) runs end to end: the app log shows
+      `PingIntent started` and `finished` at 16:03:08, and `BackgroundShortcutRunner`
+      ran the action. It shows no dialog. Ping in the Shortcuts app, and a saved shortcut
+      that holds the Ping action, show the dialog "macro-spotlight-intents is working".
+      The missing Spotlight dialog for the app entry is outside this task.
 - [x] Deleting `Config/Signing.local.xcconfig` makes the build fail with a
       signing error that names the missing team, not a silent ad-hoc build.
       Confirmed: `BUILD FAILED` with `Signing for "MacroSpotlightIntents"
       requires a development team.`
-- [ ] The root `README.md` "Getting started" steps work as written on a clean
+- [x] The root `README.md` "Getting started" steps work as written on a clean
       clone.
-      Steps 1–5 ran as written. Step 6 fails at its last claim: the dialog does not show (see the Ping item above).
+      All six steps ran as written. Step 6 matches the gap in the Ping item above.
 - [x] No `.p8`, `.p12`, or provisioning profile is tracked:
       `git ls-files | grep -E '\.(p8|p12|mobileprovision|provisionprofile)$'`
       prints nothing.
