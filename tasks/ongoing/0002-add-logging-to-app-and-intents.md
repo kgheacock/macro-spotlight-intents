@@ -101,25 +101,25 @@ An outside reviewer verifies each item without help from the implementer. Each
 item names its proof. The task moves to `complete/` only when every box is
 ticked.
 
-- [ ] **DoD-1** — Running Ping from Shortcuts writes `PingIntent started` and
+- [x] **DoD-1** — Running Ping from Shortcuts writes `PingIntent started` and
   `PingIntent finished in <n> ms`. **Proof:** run
   `/usr/bin/log stream --level info --predicate 'subsystem == "<prefix>.MacroSpotlightIntents"'`
   while you run Ping, where `<prefix>` is `BUNDLE_ID_PREFIX` from `Config/Signing.local.xcconfig`
-- [ ] **DoD-2** — The same two lines appear when Ping runs from Spotlight.
+- [x] **DoD-2** — The same two lines appear when Ping runs from Spotlight.
   **Proof:** the same command, with Ping started from Spotlight
-- [ ] **DoD-3** — After the run, the lines are still readable. **Proof:**
+- [x] **DoD-3** — After the run, the lines are still readable. **Proof:**
   `/usr/bin/log show --last 5m --predicate 'subsystem == "<prefix>.MacroSpotlightIntents"'` prints both lines
-- [ ] **DoD-4** — Launching the app writes one `app launched version=<v> build=<b>` line.
+- [x] **DoD-4** — Launching the app writes one `app launched version=<v> build=<b>` line.
   **Proof:** `/usr/bin/log show --last 1m` with the same predicate, after you launch the app
-- [ ] **DoD-5** — When the body throws, `IntentLog.run` still throws the same
+- [x] **DoD-5** — When the body throws, `IntentLog.run` still throws the same
   error to the caller. **Proof:** `xcodebuild test -scheme MacroSpotlightIntents`
   runs `IntentLogTests.rethrowsBodyError` and it passes. Then run
   `/usr/bin/log show --last 1m --predicate 'subsystem == "<prefix>.MacroSpotlightIntents" AND messageType == error'`. It prints one `failed after` line
-- [ ] **DoD-6** — `IntentLog.run` returns the value of its body. **Proof:**
+- [x] **DoD-6** — `IntentLog.run` returns the value of its body. **Proof:**
   `IntentLogTests.returnsBodyValue` passes
-- [ ] **DoD-7** — The source has no ad hoc logging. **Proof:**
+- [x] **DoD-7** — The source has no ad hoc logging. **Proof:**
   `grep -rnE 'print\(|NSLog\(' Sources` prints nothing
-- [ ] **DoD-8** — `README.md` records the debug commands. **Proof:** `README.md`, section "Debugging"
+- [x] **DoD-8** — `README.md` records the debug commands. **Proof:** `README.md`, section "Debugging"
 - [ ] **DoD-9** — The PR in the `pr` field links to this spec. **Proof:** PR body
 
 ## Risks
@@ -129,8 +129,16 @@ ticked.
 
 ## Open questions
 
-- [ ] Do the logs show why the `PingIntent` dialog is missing? — the implementer, after DoD-1
+- [ ] Why does Spotlight show no dialog for Ping? Answered in part on 2026-11-23: the logs show that `perform()` starts and finishes from both Spotlight and Shortcuts, and Shortcuts shows the dialog. Spotlight is unconfirmed. — Keith, in a follow-up task
 
 ## Notes
 
 Task `0001` records the missing dialog in its Definition of done.
+
+Evidence, 2026-11-23, `/usr/bin/log show` for the installed app:
+
+- Spotlight run: `PingIntent started` and `PingIntent finished in 0 ms` at 16:03:08. (DoD-2)
+- Shortcuts run: the same two lines at 16:05:19. The Ping action showed "macro-spotlight-intents is working". (DoD-1)
+- Launch: `app launched version=1.0 build=1`. (DoD-4)
+- Test run: one `.error` line `IntentLogTests failed after 0 ms: BodyError`, and 4 tests passed. (DoD-5, DoD-6)
+- `grep -rnE 'print\(|NSLog\(' Sources` printed nothing. (DoD-7)
